@@ -143,6 +143,8 @@ document.querySelector(".chat-content").addEventListener("keydown", function (e)
 });
 
 function sendMessage(textarea) {
+    event.preventDefault();
+    
     const form = textarea.closest(".conversation");
     const inputField = form.querySelector(".conversation-form-input");
     const messageText = inputField.value.trim();
