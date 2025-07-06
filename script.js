@@ -190,7 +190,7 @@ function sendMessage(textarea) {
             }
         }
     
-      fetch("https://pudding48-tinyllamatest2.hf.space/ask", {
+      fetch("https://huscchatbox-tinyllamatest.hf.space/ask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
