@@ -142,92 +142,76 @@ document.querySelector(".chat-content").addEventListener("keydown", function (e)
     }
 });
 
-function sendMessage(textarea) {
-    event.preventDefault();
+function sendMessage(event, textarea) {
+      event.preventDefault();
     
-    const form = textarea.closest(".conversation");
-    const inputField = form.querySelector(".conversation-form-input");
-    const messageText = inputField.value.trim();
-    const scrollContainer = form.querySelector(".conversation-main");
-    if (!messageText) return;
-
-    const messageList = form.querySelector(".conversation-wrapper");
-
-    const newMessage = document.createElement("li");
-    newMessage.classList.add("conversation-item");
-    newMessage.innerHTML = `
-        <div class="conversation-item-content">
-            <div class="conversation-item-box">
-                <div class="conversation-item-text">
-                    <p>${messageText}</p>
-                    <div class="conversation-item-time">${getCurrentTime()}</div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    messageList.appendChild(newMessage);
-    inputField.value = "";
-    scrollContainer.scrollTo({
-        top: scrollContainer.scrollHeight,
-        behavior: "smooth"
-    });
-
-    const isFirstMessage = messageList.querySelectorAll(".conversation-item").length === 1;
-
-    if (!isFirstMessage) {
-        
-        const conversationId = form.id; // e.g. conversation-3
-        
-        const conversationSelector = `#${conversationId}`;
-
-        const previewLink = document.querySelector(`a[data-conversation="${conversationSelector}"]`);
-        
-        if (previewLink) {
-            const previewText = previewLink.querySelector(".content-message-text");
-            console.log(previewText);
-            if (previewText) {
-                previewText.textContent = messageText;
-            }
-        }
-    }
-
-    fetch("https://pudding48-tinyllamatest2.hf.space/ask", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ query: messageText })
-    })
-    .then(res => res.json())
-    .then(data => {
-      console.log("✅ API response:", data);
+      const form = textarea.closest(".conversation");
+      const inputField = form.querySelector(".conversation-form-input");
+      const messageText = inputField.value.trim();
+      const scrollContainer = form.querySelector(".conversation-main");
+      if (!messageText) return;
     
-      const botMessage = document.createElement("li");
-      botMessage.classList.add("conversation-item", "me");
+      const messageList = form.querySelector(".conversation-wrapper");
     
-      botMessage.innerHTML = `
+      // Append user message
+      const newMessage = document.createElement("li");
+      newMessage.classList.add("conversation-item");
+      newMessage.innerHTML = `
         <div class="conversation-item-content">
           <div class="conversation-item-box">
             <div class="conversation-item-text">
-              <p>${data.answer}</p>
+              <p>${messageText}</p>
               <div class="conversation-item-time">${getCurrentTime()}</div>
             </div>
           </div>
         </div>
       `;
-    
-      messageList.appendChild(botMessage);
+      messageList.appendChild(newMessage);
+      inputField.value = "";
       scrollContainer.scrollTo({
         top: scrollContainer.scrollHeight,
         behavior: "smooth"
       });
-    })
-    .catch(err => {
-      console.error("❌ Fetch error:", err);
-    });
-
+    
+      // Update preview link if needed
+      if (messageList.querySelectorAll(".conversation-item").length > 1) {
+        const conversationId = form.id;
+        const previewLink = document.querySelector(`a[data-conversation="#${conversationId}"]`);
+        if (previewLink) {
+          const previewText = previewLink.querySelector(".content-message-text");
+          if (previewText) previewText.textContent = messageText;
+        }
+      }
+    
+      // Send to your HF Space backend
+      fetch("https://pudding48-tinyllamatest2.hf.space/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: messageText })
+      })
+      .then(res => res.json())
+      .then(data => {
+        const botMessage = document.createElement("li");
+        botMessage.classList.add("conversation-item", "me");
+        botMessage.innerHTML = `
+          <div class="conversation-item-content">
+            <div class="conversation-item-box">
+              <div class="conversation-item-text">
+                <p>${data.answer}</p>
+                <div class="conversation-item-time">${getCurrentTime()}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        messageList.appendChild(botMessage);
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollHeight,
+          behavior: "smooth"
+        });
+      })
+      .catch(err => console.error("❌ Fetch error:", err));
 }
+
 
 function getCurrentTime() {
     const now = new Date();
