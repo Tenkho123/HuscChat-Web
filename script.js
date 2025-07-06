@@ -190,23 +190,11 @@ function sendMessage(textarea) {
         }
     }
 
-    const botMessage = document.createElement("li");
-        botMessage.classList.add("conversation-item", "bot");
-        botMessage.innerHTML = `
-            <div class="conversation-item-content">
-                <div class="conversation-item-box">
-                    <div class="conversation-item-text">
-                        <p>"hi"</p>
-                        <div class="conversation-item-time">${getCurrentTime()}</div>
-                    </div>
-                </div>
-            </div>
-        `;
-        messageList.appendChild(botMessage);
-        scrollContainer.scrollTo({
-            top: scrollContainer.scrollHeight,
-            behavior: "smooth"
-        });
+    fetch("https://pudding48-tinyllamatest2.hf.space/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: "Khoa CNTT thành lập năm nào?" })
+    }).then(res => res.json()).then(console.log);
 }
 
 function getCurrentTime() {
