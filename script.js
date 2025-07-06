@@ -191,10 +191,19 @@ function sendMessage(textarea) {
     }
 
     fetch("https://pudding48-tinyllamatest2.hf.space/ask", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: "Khoa CNTT thành lập năm nào?" })
-    }).then(res => res.json()).then(console.log);
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ query: "Khoa CNTT thành lập năm nào?" })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log("✅ API response:", data);
+    })
+    .catch(err => {
+      console.error("❌ Fetch error:", err);
+    });
 }
 
 function getCurrentTime() {
