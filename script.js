@@ -190,22 +190,13 @@ function sendMessage(textarea) {
         }
     }
 
-    fetch("https://pudding48-tinyllamatest2.hf.space/ask", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ query: messageText })
-    })
-    .then(res => res.json())
-    .then(data => {
-        const botMessage = document.createElement("li");
+    const botMessage = document.createElement("li");
         botMessage.classList.add("conversation-item", "bot");
         botMessage.innerHTML = `
             <div class="conversation-item-content">
                 <div class="conversation-item-box">
                     <div class="conversation-item-text">
-                        <p>${data.answer}</p>
+                        <p>"hi"</p>
                         <div class="conversation-item-time">${getCurrentTime()}</div>
                     </div>
                 </div>
@@ -216,7 +207,6 @@ function sendMessage(textarea) {
             top: scrollContainer.scrollHeight,
             behavior: "smooth"
         });
-    });
 }
 
 function getCurrentTime() {
