@@ -142,7 +142,7 @@ document.querySelector(".chat-content").addEventListener("keydown", function (e)
     }
 });
 
-function sendMessage(event, textarea) {
+function sendMessage(textarea) {
         event.preventDefault();
     
         const form = textarea.closest(".conversation");
