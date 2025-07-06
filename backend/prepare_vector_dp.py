@@ -21,7 +21,7 @@ def create_db_from_text():
     chunks = text_splitter.split_text(raw_text)
 
     # Embeding
-    embedding_model = GPT4AllEmbeddings(model_file= "model/all-minilm-l6-v2-q4_0.gguf")
+    embedding_model = GPT4AllEmbeddings(model_file= "model/tinyllama-1.1b-chat-v1.0.Q8_0.gguf")
     
     # Dua vao Faiss Vector DB
     db = FAISS.from_texts(texts=chunks, embedding=embedding_model)
@@ -36,7 +36,7 @@ def create_dp_from_files():
     text_splitter = CharacterTextSplitter(chunk_size = 512, chunk_overlap = 50)
     chunks = text_splitter.split_documents(documents)
 
-    embedding_model = GPT4AllEmbeddings(model_file = "model/all-minilm-l6-v2-q4_0.gguf")
+    embedding_model = GPT4AllEmbeddings(model_file = "model/tinyllama-1.1b-chat-v1.0.Q8_0.gguf")
     dp = FAISS.from_documents(chunks, embedding_model)
     dp.save_local(vector_dp_path)
     return dp
