@@ -192,7 +192,40 @@ function sendMessage(event, textarea) {
             }
         }
     
-      
+      fetch("https://pudding48-tinyllamatest2.hf.space/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ query: messageText })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log("✅ API response:", data);
+    
+      const botMessage = document.createElement("li");
+      botMessage.classList.add("conversation-item", "me");
+    
+      botMessage.innerHTML = `
+        <div class="conversation-item-content">
+          <div class="conversation-item-box">
+            <div class="conversation-item-text">
+              <p>${data.answer}</p>
+              <div class="conversation-item-time">${getCurrentTime()}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    
+      messageList.appendChild(botMessage);
+      scrollContainer.scrollTo({
+        top: scrollContainer.scrollHeight,
+        behavior: "smooth"
+      });
+    })
+    .catch(err => {
+      console.error("❌ Fetch error:", err);
+    });
 }
 
 
