@@ -1,0 +1,7 @@
+langchain
+langchain-community
+ctransformers
+faiss-cpu
+gpt4all
+fastapi
+uvicorn
